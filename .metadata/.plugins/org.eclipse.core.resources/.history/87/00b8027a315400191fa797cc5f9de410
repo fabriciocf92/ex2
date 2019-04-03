@@ -1,0 +1,33 @@
+package com.teste.campanha.repositorios;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.teste.campanha.Campanha;
+
+@Repository
+public interface RepositorioCampanha extends JpaRepository<Campanha, Long>{
+	
+	@Query(value =
+			"SELECT * " +
+			"FROM campanhas"
+		, nativeQuery = true)
+	public Campanha todasCampanhas();
+
+	@Query(value =
+			"SELECT * " +
+			"FROM campanhas " +
+			"WHERE id = ?1"
+		, nativeQuery = true)
+	public Campanha campanha(Long Id);
+	
+	@Query(value =
+			"DELETE " +
+			"FROM campanhas " +
+			"WHERE id = ?1"
+		, nativeQuery = true)
+	public void deletarCampanha(Long campanhaId);
+	
+	
+}

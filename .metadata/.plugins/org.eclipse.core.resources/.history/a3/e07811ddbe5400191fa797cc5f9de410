@@ -1,0 +1,21 @@
+package com.teste.campanha.repositorios;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.teste.campanha.modelos.Campanha;
+
+@Repository
+public interface RepositorioCampanha extends JpaRepository<Campanha, Long>{
+
+	@Query(value =
+			"SELECT * " +
+			"FROM campanhas " +
+			"WHERE fim_vingencia > Now()"
+		, nativeQuery = true)
+	public List<Campanha> campanhas();
+	
+}

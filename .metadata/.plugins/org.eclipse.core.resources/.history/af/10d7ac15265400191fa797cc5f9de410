@@ -1,0 +1,6 @@
+server.port = 3500
+spring.datasource.platform=mysql
+spring.datasource.url=jdbc:remotemysql.com:3306/UNi0PSYjxO
+spring.datasource.username=UNi0PSYjxO
+spring.datasource.password=9OdRMdK7AZ
+spring.datasource.tomcat.default-auto-commit=false

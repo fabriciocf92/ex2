@@ -1,0 +1,74 @@
+package com.teste.campanha;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.teste.campanha.modelos.Campanha;
+import com.teste.campanha.modelos.Time;
+import com.teste.campanha.repositorios.RepositorioCampanha;
+import com.teste.campanha.repositorios.RepositorioTime;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+@RestController
+public class Rotas {
+
+	@Autowired
+	private RepositorioCampanha repositorioCampanha;
+	
+	@Autowired
+	private RepositorioTime repositorioTime;
+	
+	@GetMapping("/campanhas")
+	public List<Campanha> retornarCampanhas(){
+		return repositorioCampanha.campanhas();
+	}
+	
+	@GetMapping("/campanha/{id}")
+	public Optional<Campanha> campanhaPorId(@PathVariable Long id){
+		return repositorioCampanha.findById(id);
+	}
+	
+	@Transactional
+	@PostMapping("/campanha")
+	public void criarCampanha(HttpServletRequest request, @RequestBody Campanha campanha) throws IOException{
+		System.out.print(request.getReader());
+		//campanha.setTime(timePorId(timeId).get());
+		//return repositorioCampanha.save(campanha);
+	}
+	
+	//@Transactional
+	//@PostMapping("/campanha/{id}")
+	//public Campanha editarCampanha(HttpServletRequest request, @RequestBody Campanha campanha, @PathVariable Long id){
+	//	campanha.setId(id);
+	//	return repositorioCampanha.save(campanha);
+	//}
+	
+	@DeleteMapping("/campanha/{id}")
+	public void deletarCampanha(@PathVariable Long id){
+		repositorioCampanha.deleteById(id);
+	}
+	
+	@GetMapping("/time/{id}")
+	public Optional<Time> timePorId(@PathVariable Long id){
+		return repositorioTime.findById(id);
+	}
+	
+	@Transactional
+	@PostMapping("/time")
+	public Time criarTime(HttpServletRequest request, @RequestBody Time time){
+		time = repositorioTime.save(time);
+		return time;
+	}
+}

@@ -1,0 +1,5 @@
+package com.teste.campanha.modelos;
+
+public class CampanhaCliente {
+
+}

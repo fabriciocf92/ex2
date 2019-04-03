@@ -1,0 +1,7 @@
+package com.teste.campanha.repositorios;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RepositorioTime extends JpaRepository<Time, ID> {
+
+}

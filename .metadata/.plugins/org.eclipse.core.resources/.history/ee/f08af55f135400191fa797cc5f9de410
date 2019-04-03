@@ -1,0 +1,18 @@
+package com.teste.campanha;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@RestController
+public class Rotas {
+
+	@Autowired
+	private RepositorioCampanha repositorio;
+	
+	//@GetMapping("/campanhas")
+	//public Campanha todasCampanhas{
+	//	
+	//}
+	
+}

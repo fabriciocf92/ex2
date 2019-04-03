@@ -1,0 +1,59 @@
+package com.teste.campanha;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+public class Campanhas {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@Column(columnDefinition = "text")
+	private String name;
+
+	private Integer idTime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date vigencia;
+	
+	public Long getId() {
+		return this.id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setNameCampanha(String name) {
+		this.name = name;
+	}
+
+	public Integer getIdTime() {
+		return idTime;
+	}
+
+	public void setIdTime(Integer idTime) {
+		this.idTime = idTime;
+	}
+
+	public Date getVigencia() {
+		return vigencia;
+	}
+
+	public void setVigencia(Date vigencia) {
+		this.vigencia = vigencia;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+}

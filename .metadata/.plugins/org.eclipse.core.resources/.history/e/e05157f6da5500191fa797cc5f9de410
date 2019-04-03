@@ -1,0 +1,5 @@
+package com.teste.campanha.repositorios;
+
+public class RepositorioCampanhaCliente {
+
+}
