@@ -16,6 +16,8 @@ import com.teste.campanha.repositorios.RepositorioCampanhaCliente;
 import com.teste.campanha.repositorios.RepositorioCliente;
 import com.teste.campanha.repositorios.RepositorioTime;
 
+import Exception.ForbiddenException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -66,9 +68,6 @@ public class Rotas {
 		Date inicioVigencia = campanha.getInicioVigencia();
 		Date fimVigencia = campanha.getFimVigencia();
 		List<Campanha> campanhasMesmaVigencia = repositorioCampanha.campanhasPorVigencia(simpleDateFormat.format(inicioVigencia),simpleDateFormat.format(fimVigencia));
-		System.out.println(simpleDateFormat.format(inicioVigencia));
-		System.out.println(fimVigencia.toString());
-		System.out.println(campanhasMesmaVigencia);
 		GregorianCalendar cal = new GregorianCalendar();
 		if(!campanhasMesmaVigencia.isEmpty()) {
 			List<Campanha> campanhas = repositorioCampanha.findAll();
@@ -76,20 +75,26 @@ public class Rotas {
 				Date fimVigenciaAtiva = campanhaAtiva.getFimVigencia();
 				cal.setTime(fimVigenciaAtiva);
 				cal.add(Calendar.DATE, 1);
-				System.out.println(simpleDateFormat.format(cal.getTime()));
 				while(!repositorioCampanha.campanhasPorFimVigencia(simpleDateFormat.format(cal.getTime())).isEmpty()) {
 					cal.add(Calendar.DATE, 1);
 				}
 				campanhaAtiva.setFimVigencia(cal.getTime());
 			}
 		}
-		return repositorioCampanha.save(campanha);
+		repositorioCampanha.save(campanha);
+		List<Cliente> clientes = repositorioCliente.clientesPorTime(timeId.toString());
+		for (Cliente cliente : clientes) {
+			criarRelacao(cliente.getId(), campanha.getId());
+		}
+		return campanha;
 	}
 	
 	@Transactional
 	@PostMapping("/campanha/{id}")
 	public Campanha editarCampanha(HttpServletRequest request, @RequestBody Campanha campanha, @PathVariable Long id){
 		campanha.setId(id);
+		Long timeId = campanha.getTimeId();
+		campanha.setTime(timePorId(timeId).get());
 		return repositorioCampanha.save(campanha);
 	}
 	
@@ -118,9 +123,17 @@ public class Rotas {
 	@Transactional
 	@PostMapping("/cliente")
 	public Cliente criarCliente(HttpServletRequest request, @RequestBody Cliente cliente){
+		String email = cliente.getEmail();
+		if(!repositorioCliente.clientesPorEmail(email).isEmpty()) {
+			throw new ForbiddenException("O e-mail ja foi cadastrado");
+		}
 		Long timeId = cliente.getTimeId();
 		cliente.setTime(timePorId(timeId).get());
+		List<Campanha> campanhas = repositorioCampanha.campanhasPorTime(timeId.toString());
 		cliente = repositorioCliente.save(cliente);
+		for (Campanha campanha : campanhas) {
+			criarRelacao(cliente.getId(), campanha.getId());
+		}
 		return cliente;
 	}
 	

@@ -28,6 +28,16 @@ public class Cliente {
 	@Column(columnDefinition = "text")
 	private String nome;
 	
+	@Column(columnDefinition = "text")
+	private String email;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date nascimento;
+	
+	public Long getId() {
+		return id;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -35,12 +45,6 @@ public class Cliente {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	@Column(columnDefinition = "text")
-	private String email;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date nascimento;
 	
 	@JsonSerialize
 	@JsonDeserialize
